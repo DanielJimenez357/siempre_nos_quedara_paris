@@ -1,0 +1,42 @@
+name: destroy
+
+on:
+  push:
+    branches: [ "main" ]
+
+
+jobs:
+  destroy:
+    if: contains(github.event.head_commit.message, 'destroy')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: "Configure AWS Credentials"
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+
+      - name: Init web
+        run: terraform init
+        working-directory: ./terraform_web
+
+      - name: Destroy web
+        run: terraform destroy -auto-approve
+        working-directory: ./terraform_web
+
+      - name: Reconfigure backend
+        run: terraform init -reconfigure
+        working-directory: ./terraform_backend
+
+      - name: Destroy backend
+        run: terraform apply -auto-approve
+        working-directory: ./terraform_backend
