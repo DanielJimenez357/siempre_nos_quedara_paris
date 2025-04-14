@@ -33,14 +33,12 @@ jobs:
 
       - name: Apply backend
         run: terraform apply -auto-approve
-        working-directory: ./terraform_web
-
-
-      - name: Init backend
-        run: terraform init
         working-directory: ./terraform_backend
 
+      - name: Init web
+        run: terraform init
+        working-directory: ./terraform_web
 
-      - name: Apply backend
+      - name: Apply web
         run: terraform apply -auto-approve
         working-directory: ./terraform_web
