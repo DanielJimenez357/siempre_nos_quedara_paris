@@ -5,6 +5,15 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  backend "s3" {
+    bucket         = "state-dani357"  
+    key            = "web-simple/terraform.tfstate"    
+    region         = "us-east-1"                     
+    dynamodb_table = "almacen_estado"  
+    encrypt        = true                              
+  }
+
 }
 
 provider "aws" {
@@ -68,23 +77,23 @@ resource "aws_s3_bucket_acl" "s3_bucket_acl" {
 
 resource "aws_s3_object" "subir_html" {
     depends_on = [aws_s3_bucket_acl.s3_bucket_acl]
-    for_each        = fileset("../web/", "*.html")
+    for_each        = fileset("./web/", "*.html")
     bucket          = aws_s3_bucket.servidor.bucket
     key             = each.value
-    source          = "../web/${each.value}"
+    source          = "./web/${each.value}"
     content_type    = "text/html"
-    etag            = filemd5("../web/${each.value}")
+    etag            = filemd5("./web/${each.value}")
     acl             = "public-read"
 }
 
 resource "aws_s3_object" "subir_css" {
     depends_on = [aws_s3_bucket_acl.s3_bucket_acl]
-    for_each        = fileset("../web/", "*.css")
+    for_each        = fileset("./web/", "*.css")
     bucket          = aws_s3_bucket.servidor.bucket
     key             = each.value
-    source          = "../web/${each.value}"
+    source          = "./web/${each.value}"
     content_type    = "text/css"
-    etag            = filemd5("../web/${each.value}")
+    etag            = filemd5("./web/${each.value}")
     acl             = "public-read"
 }
 
