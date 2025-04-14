@@ -24,6 +24,10 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Init backend
+        run: terraform init -reconfigure
+        working-directory: ./terraform_backend
+
+      - name: Reconfigure backend
         run: terraform init
         working-directory: ./terraform_backend
 
