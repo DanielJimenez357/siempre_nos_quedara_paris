@@ -9,3 +9,4 @@ resource "aws_dynamodb_table" "almacen_estado" {
     type = "S" 
   }
 }
+
