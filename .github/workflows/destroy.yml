@@ -39,5 +39,5 @@ jobs:
         working-directory: ./terraform_backend
 
       - name: Destroy backend
-        run: terraform apply -auto-approve
+        run: terraform destroy -auto-approve
         working-directory: ./terraform_backend
