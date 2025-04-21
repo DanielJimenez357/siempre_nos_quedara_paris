@@ -12,6 +12,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "state" {
+  force_destroy = true
   bucket  = "${var.nombre_bucket_state}"
 }
 

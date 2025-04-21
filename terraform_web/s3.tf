@@ -23,6 +23,7 @@ provider "aws" {
 
 
 resource "aws_s3_bucket" "servidor" {
+  force_destroy = true
   bucket  = "www.${var.nombre_bucket}"
 }
 
